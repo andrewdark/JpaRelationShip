@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ua.pp.darnsoft.models.manytomany.BigItem;
 import ua.pp.darnsoft.models.manytomany.Category;
+import ua.pp.darnsoft.models.manytomany.intermediate.entity.RoleE;
+import ua.pp.darnsoft.models.manytomany.intermediate.entity.RoledUser;
+import ua.pp.darnsoft.models.manytomany.intermediate.entity.UserE;
 import ua.pp.darnsoft.models.manytoone.Bid;
 import ua.pp.darnsoft.models.manytoone.Item;
 import ua.pp.darnsoft.models.manytoone.jointable.Buyer;
@@ -15,6 +18,8 @@ import ua.pp.darnsoft.models.onetoone.User;
 import ua.pp.darnsoft.repository.*;
 
 import java.math.BigDecimal;
+
+import static java.util.Arrays.asList;
 
 @Controller
 public class MainController {
@@ -28,6 +33,12 @@ public class MainController {
     BigItemRepository bigItemRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    RoledUserRepository roledUserRepository;
+    @Autowired
+    UserERepository userERepository;
+    @Autowired
+    RoleERepository roleERepository;
 
     @GetMapping(value = {"/", "/index"})
     public String index(Model dasModel) {
@@ -111,6 +122,35 @@ public class MainController {
 
         dasModel.addAttribute("categories", categoryRepository.findAll());
         dasModel.addAttribute("items", bigItemRepository.findAll());
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        UserE u1 = new UserE();
+        u1.setUserName("Admin");
+        u1.setEncryptedPassword("123456");
+        u1.setEnabled(true);
+        UserE u2 = new UserE();
+        u2.setUserName("User");
+        u2.setEncryptedPassword("123456");
+        u2.setEnabled(true);
+        UserE u3 = new UserE();
+        u3.setUserName("Guest");
+        u3.setEncryptedPassword("123456");
+        u3.setEnabled(true);
+        userERepository.saveAll(asList(u1, u2, u3));
+
+        RoleE r1 = new RoleE();
+        r1.setRoleName("ROLE_USER");
+        RoleE r2 = new RoleE();
+        r2.setRoleName("ROLE_ADMIN");
+        roleERepository.saveAll(asList(r1, r2));
+
+        RoledUser link0 = new RoledUser(r1, u1);
+        RoledUser link1 = new RoledUser(r1, u2);
+        RoledUser link2 = new RoledUser(r1, u3);
+        RoledUser link3 = new RoledUser(r2, u1);
+
+        roledUserRepository.saveAll(asList(link1, link2, link3));
+
+        dasModel.addAttribute("roledusers",roledUserRepository.findAll());
         return "ManyToMany";
     }
 

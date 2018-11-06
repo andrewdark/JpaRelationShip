@@ -6,49 +6,90 @@
     <title>ManyToMany</title>
 </head>
 <body>
-<b>ManyToMany</b>
-<table border="2" width="200px">
-    <caption><b>CATEGORIES</b></caption>
-    <thead>
-
-    <th>ID</th>
-    <th>NAME</th>
-    <th>ITEMS</th>
-
-    </thead>
-    <tbody>
-    <tr th:each="cat1 : ${categories}">
-        <td th:text="${cat1.id}"></td>
-        <td th:text="${cat1.name}"></td>
+<table>
+    <caption>ManyToMany</caption>
+    <tr>
         <td>
-            <th:block th:each="item1 : ${cat1.bigItems}">
-                <p th:text="${item1.name}"></p>
-            </th:block>
+
+            <b>ManyToMany</b>
+            <table border="2" width="200px">
+                <caption><b>CATEGORIES</b></caption>
+                <thead>
+
+                <th>ID</th>
+                <th>NAME</th>
+                <th>ITEMS</th>
+
+                </thead>
+                <tbody>
+                <tr th:each="cat1 : ${categories}">
+                    <td th:text="${cat1.id}"></td>
+                    <td th:text="${cat1.name}"></td>
+                    <td>
+                        <th:block th:each="item1 : ${cat1.bigItems}">
+                            <p th:text="${item1.name}"></p>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </td>
+        <td>
+
+            <table border="2">
+                <caption><b>ITEMS</b></caption>
+                <thead>
+
+                <th>ID</th>
+                <th>NAME</th>
+                <th>CATIGORIES</th>
+
+                </thead>
+                <tbody>
+                <tr th:each="item2 : ${items}">
+                    <td th:text="${item2.id}"></td>
+                    <td th:text="${item2.name}"></td>
+                    <td>
+                        <th:block th:each="cat2 : ${item2.categories}">
+                            <p th:text="${cat2.name}"></p>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td></td>
     </tr>
-    </tbody>
+    <tr>
+        <td>
+            <table border="2" style="color: purple">
+                <caption>WITH Intermediate Entity</caption>
+                <thead>
+
+                <th>ID</th>
+                <th>USER</th>
+                <th>ROLES</th>
+
+                </thead>
+                <tbody>
+                <tr th:each="tuser : ${roledusers}">
+                    <td th:text="${tuser.addedOn}"></td>
+                    <td th:each="user: ${tuser.user}">
+                        <span th:text="${user.id}"/>-<span th:text="${user.userName}"/>
+                    </td>
+                    <td th:each="user: ${tuser.user}">
+                        <th:block th:each="roledU : ${user.roledUsers}">
+                            <span th:text="${roledU.role.roleName}"></span><br>
+                        </th:block>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
 </table>
 <hr/>
-<table border="2">
-    <caption><b>ITEMS</b></caption>
-    <thead>
-
-    <th>ID</th>
-    <th>NAME</th>
-    <th>CATIGORIES</th>
-
-    </thead>
-    <tbody>
-    <tr th:each="item2 : ${items}">
-        <td th:text="${item2.id}"></td>
-        <td th:text="${item2.name}"></td>
-        <td>
-            <th:block th:each="cat2 : ${item2.categories}">
-                <p th:text="${cat2.name}"></p>
-            </th:block>
-        </td>
-    </tr>
-    </tbody>
-</table>
 </body>
 </html>
