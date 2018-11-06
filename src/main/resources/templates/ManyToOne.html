@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>ManyToOne</title>
+</head>
+<body>
+<b>ManyToOne</b>
+<th:block th:text="${item.name}"></th:block>
+
+<table>
+    <tr th:each="bid : ${item.bids}">
+        <td th:text="${bid.id}"></td>
+        <td th:text="${bid.price}"></td>
+    </tr>
+</table>
+<br>
+<b>ManyToOne - JoinTable</b>
+<th:block th:text="${buyer.name}"></th:block>
+
+<table>
+    <tr th:each="goods : ${buyer.goods}">
+        <td th:text="${goods.id}"></td>
+        <td th:text="${goods.name}"></td>
+    </tr>
+</table>
+</body>
+</html>
